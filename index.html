@@ -1,1 +1,85 @@
 
+<canvas id="myCanvas" width="500" height="500" style="border:1px solid #000"></canvas>
+
+<script>
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+ctx.fillStyle = 'blue';
+
+function ellipse(x2,y2,x3,y3,k_a)
+{
+    let a=x2-x3;
+    let b=y2-y3;
+    let a1=x2+x3;
+    let b1=y2+y3;
+    let c=Math.pow(x2,2)+Math.pow(y2,2);
+    let d=Math.pow(x3,2)+Math.pow(y3,2);
+    let k=Math.sqrt(Math.pow(a,2)+Math.pow(b,2))+(2*k_a);
+    let k1=Math.pow(k,2);
+    let n=k1-Math.pow(b,2);
+    let r=c*d-Math.pow((c+d-k1)/2,2);
+
+    let s=(a*b)/n;
+    let t=(-(s*a1)+b1)/2;
+    let u=Math.pow(s,2)-((k1-Math.pow(a,2))/n);
+    let v=u*a1;
+    let w=Math.pow(t,2)-(r/n);
+
+    var x_min=(v+Math.sqrt(Math.pow(v,2)-4*u*w))/(2*u)
+    var y_min=s*x_min+t
+    var x_max=(v-Math.sqrt(Math.pow(v,2)-4*u*w))/(2*u)
+    var y_max=s*x_max+t
+    
+    var y_temp1=y_min
+    var y_temp2=y_min
+
+    for(let x=x_min; x<=x_max; x)
+    {
+        var temp_x=x+1;
+        var y_w=((u*Math.pow(x+1,2))-(v*(x+1))+w)
+        
+        if(y_w>0)
+        {
+        ctx.beginPath();
+        ctx.moveTo(x,y_temp1);
+        y_temp1=(s*temp_x+t)-Math.sqrt(y_w)
+        ctx.lineTo(x+1,y_temp1);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "blue";
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(x,y_temp2);
+        y_temp2=(s*temp_x+t)+Math.sqrt(y_w)
+        ctx.lineTo(x+1,y_temp2);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "blue";
+        ctx.stroke();
+        }
+        else
+        {
+        ctx.beginPath();
+        ctx.moveTo(x,y_temp1);
+        y_temp1=y_max
+        ctx.lineTo(x,y_temp1);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "blue";
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(x,y_temp2);
+        y_temp2=y_max
+        ctx.lineTo(x,y_temp2);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "blue";
+        ctx.stroke();
+        }
+
+        x=x+1;
+    }
+}
+
+ellipse(50,30,300,300,25);
+
+</script>
